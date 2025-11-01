@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Gallery Modal Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color);
+            font-family: var(--font-primary);
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .test-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+        .test-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .gallery-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .gallery-item-content {
+            padding: 1.5rem;
+        }
+        .gallery-item h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-color);
+        }
+        .gallery-item p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Enhanced Gallery Modal Test</h1>
+        <p>Click on any gallery item below to test the enhanced popup modal:</p>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openPhotoModal('portrait-1', 'portraits', 0)">
+                <img src="components/profetional portraits/1.png" alt="Professional Portrait">
+                <div class="gallery-item-content">
+                    <h3>Professional Portrait Session</h3>
+                    <p>Studio portrait with professional lighting setup</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openPhotoModal('creative-portrait-1', 'portraits', 0)">
+                <img src="components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp" alt="Creative Portrait">
+                <div class="gallery-item-content">
+                    <h3>Creative Portrait Experience</h3>
+                    <p>Artistic portrait with creative composition</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openPhotoModal('business-portrait-1', 'portraits', 0)">
+                <img src="components/profetional portraits/2.webp" alt="Business Portrait">
+                <div class="gallery-item-content">
+                    <h3>Executive Business Portrait</h3>
+                    <p>Corporate executive portraiture</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize gallery manager on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Test page loaded, initializing gallery...');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "Ravindu-Dev",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
