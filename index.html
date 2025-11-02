@@ -536,6 +536,194 @@
         </div>
     </section>
 
+    <!-- Photography Gallery -->
+    <section id="photography-gallery" class="gallery-section photography-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-camera"></i>
+                    <span>Photography Gallery</span>
+                </div>
+                <h2 class="section-title">Auravexon Lense - Visual Stories</h2>
+                <p class="section-subtitle">
+                    Professional photography portfolio showcasing visual storytelling through portraits, events, and commercial photography
+                </p>
+            </div>
+            
+            <div class="gallery-filter">
+                <button class="photo-filter-btn active" data-filter="all">All Photos</button>
+                <button class="photo-filter-btn" data-filter="portraits">Portraits</button>
+                <button class="photo-filter-btn" data-filter="commercial">Commercial</button>
+                <button class="photo-filter-btn" data-filter="events">Events</button>
+                <button class="photo-filter-btn" data-filter="professional">Professional</button>
+            </div>
+            
+            <div class="photo-gallery-grid">
+                <div class="photo-item" data-category="portraits">
+                    <div class="photo-thumbnail">
+                        <img src="components/profetional portraits/1.png" alt="Professional Portrait Session" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('portrait-1', 'portraits', 0)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Professional Portrait Session</h4>
+                                <p>Studio portrait with professional lighting</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-camera"></i> Portrait</span>
+                                    <span><i class="fas fa-calendar"></i> 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="professional">
+                    <div class="photo-thumbnail">
+                        <img src="components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp" alt="Executive Business Portrait" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('business-portrait-1', 'professional', 0)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Executive Business Portrait</h4>
+                                <p>Corporate professional headshot</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-briefcase"></i> Business</span>
+                                    <span><i class="fas fa-building"></i> Corporate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="portraits">
+                    <div class="photo-thumbnail">
+                        <img src="components/profetional portraits/2.webp" alt="Creative Portrait Experience" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('creative-portrait-1', 'portraits', 1)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Creative Portrait Experience</h4>
+                                <p>Artistic portrait with creative composition</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-palette"></i> Creative</span>
+                                    <span><i class="fas fa-lightbulb"></i> Artistic</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="portraits">
+                    <div class="photo-thumbnail">
+                        <img src="components/profetional portraits/3.png" alt="Studio Portrait Collection" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('studio-portrait-1', 'portraits', 2)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Studio Portrait Collection</h4>
+                                <p>Professional studio photography session</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-studio"></i> Studio</span>
+                                    <span><i class="fas fa-user"></i> Portrait</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample commercial and event photos using placeholder URLs -->
+                <div class="photo-item" data-category="commercial">
+                    <div class="photo-thumbnail">
+                        <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Commercial Product Photography" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('commercial-1', 'commercial', 0)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Commercial Product Photography</h4>
+                                <p>Professional product photography for marketing</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-box"></i> Product</span>
+                                    <span><i class="fas fa-store"></i> Commercial</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="events">
+                    <div class="photo-thumbnail">
+                        <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Event Coverage Photography" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('event-1', 'events', 0)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Event Coverage Photography</h4>
+                                <p>Professional event documentation and coverage</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-calendar-check"></i> Event</span>
+                                    <span><i class="fas fa-users"></i> Coverage</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="commercial">
+                    <div class="photo-thumbnail">
+                        <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Corporate Headshots" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('corporate-headshots-1', 'commercial', 1)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Corporate Headshots</h4>
+                                <p>Professional corporate team photography</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-building"></i> Corporate</span>
+                                    <span><i class="fas fa-user-tie"></i> Professional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="photo-item" data-category="events">
+                    <div class="photo-thumbnail">
+                        <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Wedding Photography" loading="lazy">
+                        <div class="photo-overlay">
+                            <button class="photo-view-btn" onclick="openPhotoModal('wedding-1', 'events', 1)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="photo-info-overlay">
+                                <h4>Wedding Photography</h4>
+                                <p>Capturing precious moments on your special day</p>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-heart"></i> Wedding</span>
+                                    <span><i class="fas fa-ring"></i> Ceremony</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-cta">
+                <h3>Ready to Capture Your Story?</h3>
+                <p>Let Auravexon Lense create stunning visual narratives that tell your unique story with professional precision.</p>
+                <a href="#contact" class="btn btn-primary">
+                    <span>Book a Session</span>
+                    <i class="fas fa-camera"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- About Experience -->
     <section id="about" class="about-section">
         <div class="container">

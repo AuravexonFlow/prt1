@@ -1058,9 +1058,51 @@ class GalleryManager {
 
   init() {
     this.setupVideoGallery();
+    this.setupPhotographyGallery();
     this.setupGalleryModals();
   }
 
+  setupPhotographyGallery() {
+    const photoFilterButtons = document.querySelectorAll('.photo-filter-btn');
+    const photoItems = document.querySelectorAll('.photo-item');
+
+    // Set default filter
+    if (photoFilterButtons.length > 0) {
+      const defaultFilter = photoFilterButtons[0];
+      defaultFilter.classList.add('active');
+    }
+
+    photoFilterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        photoFilterButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        const filterValue = button.getAttribute('data-filter');
+        this.filterPhotoItems(photoItems, filterValue);
+      });
+    });
+
+    // Setup photo modal triggers
+    photoItems.forEach(item => {
+      const viewBtn = item.querySelector('.photo-view-btn');
+      const img = item.querySelector('.photo-thumbnail img');
+      
+      if (viewBtn) {
+        viewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.openPhotoModal(item);
+        });
+      }
+      
+      if (img) {
+        img.addEventListener('click', () => {
+          this.openPhotoModal(item);
+        });
+      }
+    });
+  }
 
   setupVideoGallery() {
     const videoFilterButtons = document.querySelectorAll('.video-filter-btn');
@@ -1077,6 +1119,114 @@ class GalleryManager {
         this.filterVideoItems(videoItems, filterValue);
       });
     });
+  }
+
+  filterPhotoItems(items, filterValue) {
+    items.forEach(item => {
+      const category = item.getAttribute('data-category');
+      
+      if (filterValue === 'all' || category === filterValue) {
+        item.style.display = 'block';
+        item.classList.remove('filtering', 'hidden');
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'scale(1)';
+        }, 100);
+      } else {
+        item.classList.add('filtering');
+        setTimeout(() => {
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.8)';
+          setTimeout(() => {
+            item.style.display = 'none';
+            item.classList.add('hidden');
+          }, 300);
+        }, 100);
+      }
+    });
+  }
+
+  openPhotoModal(photoItem) {
+    const title = photoItem.querySelector('.photo-info-overlay h4')?.textContent || 'Photo';
+    const category = photoItem.getAttribute('data-category');
+    const img = photoItem.querySelector('.photo-thumbnail img');
+    const description = photoItem.querySelector('.photo-info-overlay p')?.textContent || 'Photography work';
+    const location = photoItem.querySelector('.photo-meta span[data-location]')?.textContent || '';
+    const date = photoItem.querySelector('.photo-meta span[data-date]')?.textContent || '';
+    
+    const modalContent = this.createPhotoModalContent(img.src, title, description, category, location, date);
+    this.openGalleryModal(modalContent, title, description, category, 0, 1);
+  }
+
+  createPhotoModalContent(imgSrc, title, description, category, location, date) {
+    return `
+      <div class="gallery-modal-hero">
+        <div class="hero-image">
+          <img src="${imgSrc}" alt="${title}" loading="lazy">
+          <div class="image-overlay">
+            <div class="overlay-content">
+              <h3 class="hero-title">${title}</h3>
+              <div class="hero-tags">
+                <span class="tag">${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                ${location ? `<span class="tag"><i class="fas fa-map-marker-alt"></i> ${location}</span>` : ''}
+                ${date ? `<span class="tag"><i class="fas fa-calendar"></i> ${date}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="project-info">
+        <div class="info-item">
+          <i class="fas fa-tag"></i>
+          <span>Category: ${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+        </div>
+        ${location ? `<div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Location: ${location}</span></div>` : ''}
+        ${date ? `<div class="info-item"><i class="fas fa-calendar"></i><span>Date: ${date}</span></div>` : ''}
+        <div class="info-item">
+          <i class="fas fa-camera"></i>
+          <span>Photography by Ravindu Madhushan</span>
+        </div>
+      </div>
+      
+      <div class="gallery-modal-description">
+        <div class="gallery-description">
+          <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+          <div class="project-overview">
+            <p>${description}</p>
+          </div>
+          <div class="technical-details">
+            <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+            <div class="tech-grid">
+              <div class="tech-item">
+                <i class="fas fa-eye"></i>
+                <div>
+                  <strong>Style:</strong> Professional photography showcasing creative vision and technical expertise.
+                </div>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-cogs"></i>
+                <div>
+                  <strong>Equipment:</strong> Professional cameras and lighting equipment for optimal results.
+                </div>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-palette"></i>
+                <div>
+                  <strong>Post-Processing:</strong> Advanced color grading and editing to enhance visual impact.
+                </div>
+              </div>
+              <div class="tech-item">
+                <i class="fas fa-star"></i>
+                <div>
+                  <strong>Quality:</strong> High-resolution images suitable for print and digital use.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
 
@@ -1166,11 +1316,498 @@ function openVideoModal(videoId) {
   galleryManager.openGalleryModal(videoContent.content, videoContent.title, videoContent.description);
 }
 
+function openPhotoModal(photoId, category, index = 0) {
+  const galleryManager = window.galleryManager;
+  if (!galleryManager) return;
+
+  const photoContent = getPhotoContent(photoId, category, index);
+  galleryManager.openGalleryModal(photoContent.content, photoContent.title, photoContent.description, category, index, 1);
+}
+
 function closeGalleryModal() {
   const galleryManager = window.galleryManager;
   if (galleryManager) {
     galleryManager.closeGalleryModal();
   }
+}
+
+function getPhotoContent(photoId, category, index = 0) {
+  const photos = {
+    'portrait-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="components/profetional portraits/1.png" alt="Professional Portrait Session" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Professional Portrait Session</h3>
+                <div class="hero-tags">
+                  <span class="tag">Portrait</span>
+                  <span class="tag">Studio</span>
+                  <span class="tag">2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Portrait Photography</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Professional Studio</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Professional portrait photography showcasing studio techniques and professional lighting. This image demonstrates the use of dramatic lighting and composition to create compelling portraits that capture personality and professionalism.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-lightbulb"></i>
+                  <div>
+                    <strong>Lighting:</strong> Professional studio lighting with soft boxes and key lighting setup.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-cog"></i>
+                  <div>
+                    <strong>Composition:</strong> Classic portrait composition with careful attention to subject positioning.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-palette"></i>
+                  <div>
+                    <strong>Post-Processing:</strong> Professional color grading and retouching for optimal results.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Quality:</strong> High-resolution output suitable for professional use.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Professional Portrait Session',
+      description: 'Studio portrait with professional lighting techniques'
+    },
+    'business-portrait-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp" alt="Executive Business Portrait" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Executive Business Portrait</h3>
+                <div class="hero-tags">
+                  <span class="tag">Professional</span>
+                  <span class="tag">Corporate</span>
+                  <span class="tag">Executive</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Business Professional</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Corporate Environment</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Corporate professional photography capturing leadership qualities and business confidence. This executive portrait is designed for corporate communications, professional profiles, and business marketing materials.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-briefcase"></i>
+                  <div>
+                    <strong>Style:</strong> Corporate professional with attention to business attire and presentation.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-cog"></i>
+                  <div>
+                    <strong>Approach:</strong> Natural lighting combined with professional studio techniques.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-palette"></i>
+                  <div>
+                    <strong>Tone:</strong> Professional color grading emphasizing authority and competence.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Usage:</strong> Ideal for executive profiles, corporate websites, and business presentations.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Executive Business Portrait',
+      description: 'Corporate professional headshot for business communications'
+    },
+    'creative-portrait-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="components/profetional portraits/2.webp" alt="Creative Portrait Experience" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Creative Portrait Experience</h3>
+                <div class="hero-tags">
+                  <span class="tag">Portrait</span>
+                  <span class="tag">Creative</span>
+                  <span class="tag">Artistic</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Creative Portrait</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Studio Setup</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Artistic portrait photography showcasing creative composition and innovative lighting techniques. This piece demonstrates the intersection of technical expertise and artistic vision, creating visually compelling imagery.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-palette"></i>
+                  <div>
+                    <strong>Artistic Vision:</strong> Creative approach combining traditional portraiture with artistic expression.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-lightbulb"></i>
+                  <div>
+                    <strong>Lighting:</strong> Innovative lighting setup creating dramatic and moody atmosphere.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-cog"></i>
+                  <div>
+                    <strong>Composition:</strong> Experimental framing and positioning for visual impact.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Style:</strong> Contemporary portrait photography with artistic flair.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Creative Portrait Experience',
+      description: 'Artistic portrait with creative composition and innovative lighting'
+    },
+    'studio-portrait-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="components/profetional portraits/3.png" alt="Studio Portrait Collection" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Studio Portrait Collection</h3>
+                <div class="hero-tags">
+                  <span class="tag">Portrait</span>
+                  <span class="tag">Studio</span>
+                  <span class="tag">Professional</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Studio Portrait</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Professional Studio</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Professional studio portrait collection demonstrating mastery of controlled lighting environments. This work showcases the ability to create multiple looks within a single session, each with distinct mood and professional quality.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-studio"></i>
+                  <div>
+                    <strong>Studio Setup:</strong> Professional photography studio with controlled lighting conditions.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-lightbulb"></i>
+                  <div>
+                    <strong>Lighting:</strong> Multi-light setup with key, fill, and accent lighting for depth.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-cog"></i>
+                  <div>
+                    <strong>Technique:</strong> Systematic approach ensuring consistency across multiple shots.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Versatility:</strong> Multiple looks and styles from a single session.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Studio Portrait Collection',
+      description: 'Professional studio photography session with multiple looks'
+    },
+    'commercial-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Commercial Product Photography" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Commercial Product Photography</h3>
+                <div class="hero-tags">
+                  <span class="tag">Commercial</span>
+                  <span class="tag">Product</span>
+                  <span class="tag">Marketing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Commercial Photography</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Commercial Studio</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Professional commercial product photography designed for marketing and promotional use. This work demonstrates the ability to create compelling product imagery that drives sales and brand engagement.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-box"></i>
+                  <div>
+                    <strong>Product Focus:</strong> Specialized techniques for showcasing product features and benefits.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-store"></i>
+                  <div>
+                    <strong>Commercial Use:</strong> Optimized for e-commerce, marketing materials, and advertising.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-palette"></i>
+                  <div>
+                    <strong>Brand Alignment:</strong> Color and styling consistent with brand guidelines.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Quality Standards:</strong> High-resolution output suitable for all media formats.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Commercial Product Photography',
+      description: 'Professional product photography for marketing and sales'
+    },
+    'event-1': {
+      content: `
+        <div class="gallery-modal-hero">
+          <div class="hero-image">
+            <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Event Coverage Photography" loading="lazy">
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <h3 class="hero-title">Event Coverage Photography</h3>
+                <div class="hero-tags">
+                  <span class="tag">Events</span>
+                  <span class="tag">Coverage</span>
+                  <span class="tag">Documentation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>Category: Event Photography</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: Event Venue</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <span>Date: 2024</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-camera"></i>
+            <span>Photography by Ravindu Madhushan</span>
+          </div>
+        </div>
+        
+        <div class="gallery-modal-description">
+          <div class="gallery-description">
+            <h3><i class="fas fa-info-circle"></i> About This Work</h3>
+            <div class="project-overview">
+              <p>Comprehensive event photography capturing key moments, atmosphere, and attendee engagement. This documentation service provides clients with professional imagery for marketing, social media, and historical record keeping.</p>
+            </div>
+            <div class="technical-details">
+              <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Photography Details</h4>
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <i class="fas fa-calendar-check"></i>
+                  <div>
+                    <strong>Coverage:</strong> Complete event documentation from setup to conclusion.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-users"></i>
+                  <div>
+                    <strong>People Focus:</strong> Capturing candid moments and formal portraits of attendees.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-cog"></i>
+                  <div>
+                    <strong>Adaptability:</strong> Quick adjustment to changing lighting and venue conditions.
+                  </div>
+                </div>
+                <div class="tech-item">
+                  <i class="fas fa-star"></i>
+                  <div>
+                    <strong>Delivery:</strong> Fast turnaround with both individual and gallery formats.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      title: 'Event Coverage Photography',
+      description: 'Professional event documentation and coverage services'
+    }
+  };
+
+  return photos[photoId] || {
+    content: '<p>Photo not available.</p>',
+    title: 'Photo',
+    description: 'Photo description not available.'
+  };
 }
 
 function getVideoContent(videoId) {
