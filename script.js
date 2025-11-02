@@ -953,27 +953,6 @@ function getProjectContent(projectId) {
         </div>
       </div>
     `,
-    'photography': `
-      <div class="modal-project-content">
-        <img src="https://images.pexels.com/photos/1591447/pexels-photo-1591447.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Photography Portfolio" style="width: 100%; height: 300px; object-fit: cover; border-radius: 1rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color);">Photography Portfolio</h2>
-        <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 2rem;">
-          Professional photography services under the Auravexon Lense brand, capturing compelling moments 
-          and creating engaging visual narratives. Specializing in event photography, portrait sessions, 
-          and commercial photography with technical precision and creative vision.
-        </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 0.5rem;">
-            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Specializations</h4>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Event Photography, Portraits, Commercial</p>
-          </div>
-          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 0.5rem;">
-            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Equipment</h4>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Professional cameras, Lighting, Post-processing</p>
-          </div>
-        </div>
-      </div>
-    `,
     'video-production': `
       <div class="modal-project-content">
         <img src="https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Video Production" style="width: 100%; height: 300px; object-fit: cover; border-radius: 1rem; margin-bottom: 2rem;">
@@ -1078,27 +1057,10 @@ class GalleryManager {
   }
 
   init() {
-    this.setupPhotoGallery();
     this.setupVideoGallery();
     this.setupGalleryModals();
   }
 
-  setupPhotoGallery() {
-    const photoFilterButtons = document.querySelectorAll('.gallery-filter-btn');
-    const photoItems = document.querySelectorAll('.photo-item');
-
-    photoFilterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        photoFilterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        const filterValue = button.getAttribute('data-filter');
-        this.filterPhotoItems(photoItems, filterValue);
-      });
-    });
-  }
 
   setupVideoGallery() {
     const videoFilterButtons = document.querySelectorAll('.video-filter-btn');
@@ -1117,25 +1079,6 @@ class GalleryManager {
     });
   }
 
-  filterPhotoItems(items, filterValue) {
-    items.forEach(item => {
-      const category = item.getAttribute('data-category');
-      
-      if (filterValue === 'all' || category === filterValue) {
-        item.style.display = 'block';
-        setTimeout(() => {
-          item.style.opacity = '1';
-          item.style.transform = 'scale(1)';
-        }, 100);
-      } else {
-        item.style.opacity = '0';
-        item.style.transform = 'scale(0.8)';
-        setTimeout(() => {
-          item.style.display = 'none';
-        }, 300);
-      }
-    });
-  }
 
   filterVideoItems(items, filterValue) {
     items.forEach(item => {
@@ -1215,14 +1158,6 @@ class GalleryManager {
 }
 
 // Global Gallery Functions
-function openPhotoModal(photoId) {
-  const galleryManager = window.galleryManager;
-  if (!galleryManager) return;
-
-  const photoContent = getPhotoContent(photoId);
-  galleryManager.openGalleryModal(photoContent.content, photoContent.title, photoContent.description);
-}
-
 function openVideoModal(videoId) {
   const galleryManager = window.galleryManager;
   if (!galleryManager) return;
@@ -1236,57 +1171,6 @@ function closeGalleryModal() {
   if (galleryManager) {
     galleryManager.closeGalleryModal();
   }
-}
-
-function getPhotoContent(photoId) {
-  const photos = {
-    'portrait-1': {
-      content: '<img src="components/profetional portraits/1.png" alt="Professional Portrait">',
-      title: 'Professional Portrait',
-      description: 'Studio portrait session showcasing professional lighting and composition techniques.'
-    },
-    'portrait-2': {
-      content: '<img src="components/profetional portraits/2.webp" alt="Creative Portrait">',
-      title: 'Creative Portrait',
-      description: 'Artistic portrait emphasizing creative expression and unique visual storytelling.'
-    },
-    'event-1': {
-      content: '<img src="components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp" alt="Wedding Ceremony">',
-      title: 'Wedding Ceremony',
-      description: 'Capturing the special moments and emotions of a beautiful wedding celebration.'
-    },
-    'event-2': {
-      content: '<img src="components/profetional portraits/2.webp" alt="Corporate Event">',
-      title: 'Corporate Event',
-      description: 'Professional event photography documenting important business gatherings and networking.'
-    },
-    'landscape-1': {
-      content: '<img src="components/profetional portraits/3.png" alt="Mountain Vista">',
-      title: 'Mountain Vista',
-      description: 'Breathtaking landscape photography capturing the natural beauty of mountain ranges.'
-    },
-    'landscape-2': {
-      content: '<img src="components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp" alt="Sunset Serenity">',
-      title: 'Sunset Serenity',
-      description: 'Golden hour photography showcasing the peaceful beauty of sunset landscapes.'
-    },
-    'commercial-1': {
-      content: '<img src="components/profetional portraits/1.png" alt="Product Showcase">',
-      title: 'Product Showcase',
-      description: 'Commercial photography highlighting product features with professional lighting and styling.'
-    },
-    'commercial-2': {
-      content: '<img src="components/profetional portraits/2.webp" alt="Brand Campaign">',
-      title: 'Brand Campaign',
-      description: 'Marketing photography designed to enhance brand identity and visual communication.'
-    }
-  };
-
-  return photos[photoId] || {
-    content: '<p>Photo not available.</p>',
-    title: 'Photo',
-    description: 'Photo description not available.'
-  };
 }
 
 function getVideoContent(videoId) {
@@ -1396,388 +1280,7 @@ if ('serviceWorker' in navigator) {
       });
   });
 
-// Enhanced Gallery Content Data (Category-Specific Galleries)
-const categoryGalleries = {
-  portraits: [
-    {
-      id: 'portrait-1',
-      title: 'Professional Portrait Session',
-      category: 'portraits',
-      mainImage: 'components/profetional portraits/1.png',
-      slideshowImages: [
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <div class="gallery-description">
-          <div class="project-overview">
-            <h3><i class="fas fa-camera"></i> Project Overview</h3>
-            <p>This professional portrait session was conducted in a controlled studio environment, emphasizing natural lighting techniques combined with professional reflectors to achieve depth and dimension. The subject was positioned to highlight facial structure while maintaining a relaxed, authentic expression.</p>
-          </div>
-          
-          <div class="technical-details">
-            <h3><i class="fas fa-cogs"></i> Technical Details</h3>
-            <div class="tech-grid">
-              <div class="tech-item">
-                <i class="fas fa-camera"></i>
-                <strong>Equipment:</strong> Canon EOS R5 with 85mm f/1.2 lens, softbox lighting setup
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-edit"></i>
-                <strong>Post-Processing:</strong> Adobe Lightroom for color correction, Dodge & Burn for skin enhancement
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-palette"></i>
-                <strong>Style:</strong> Classic headshot with subtle bokeh background blur
-              </div>
-            </div>
-          </div>
-          
-          <div class="project-outcome">
-            <h3><i class="fas fa-trophy"></i> Result</h3>
-            <p>The result is a timeless portrait suitable for professional profiles, LinkedIn, or corporate branding, capturing the essence of confidence and approachability.</p>
-          </div>
-        </div>
-      `,
-      tags: ['Professional', 'Studio', 'Portrait', 'Corporate'],
-      duration: '2 hours',
-      client: 'Corporate Executive'
-    },
-    {
-      id: 'creative-portrait-1',
-      title: 'Creative Portrait Experience',
-      category: 'portraits',
-      mainImage: 'components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp',
-      slideshowImages: [
-        'components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp',
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <div class="gallery-description">
-          <div class="project-overview">
-            <h3><i class="fas fa-paint-brush"></i> Artistic Vision</h3>
-            <p>This creative portrait explores abstract expression through unconventional posing and environmental integration, using urban decay as a backdrop to symbolize resilience and artistic depth.</p>
-          </div>
-          
-          <div class="technical-details">
-            <h3><i class="fas fa-tools"></i> Technical Approach</h3>
-            <div class="tech-grid">
-              <div class="tech-item">
-                <i class="fas fa-drafting-compass"></i>
-                <strong>Composition:</strong> Rule of thirds with leading lines from graffiti elements
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-magic"></i>
-                <strong>Editing:</strong> Photoshop for surreal color grading and texture overlays
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-palette"></i>
-                <strong>Theme:</strong> Modern street art influence, evoking emotion and narrative
-              </div>
-            </div>
-          </div>
-          
-          <div class="project-outcome">
-            <h3><i class="fas fa-star"></i> Impact</h3>
-            <p>Ideal for artistic portfolios or editorial features, this piece pushes boundaries between photography and fine art.</p>
-          </div>
-        </div>
-      `,
-      tags: ['Creative', 'Artistic', 'Editorial', 'Urban'],
-      duration: '3 hours',
-      client: 'Art Magazine'
-    },
-    {
-      id: 'business-portrait-1',
-      title: 'Executive Business Portrait',
-      category: 'portraits',
-      mainImage: 'components/profetional portraits/2.webp',
-      slideshowImages: [
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <div class="gallery-description">
-          <div class="project-overview">
-            <h3><i class="fas fa-briefcase"></i> Executive Session</h3>
-            <p>A sophisticated business portrait session designed to convey leadership, professionalism, and corporate excellence. Shot in a modern office environment with careful attention to lighting and composition.</p>
-          </div>
-          
-          <div class="technical-details">
-            <h3><i class="fas fa-camera"></i> Session Details</h3>
-            <div class="tech-grid">
-              <div class="tech-item">
-                <i class="fas fa-lightbulb"></i>
-                <strong>Lighting:</strong> Natural window light with professional fill flash
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-building"></i>
-                <strong>Location:</strong> Corporate office environment
-              </div>
-              <div class="tech-item">
-                <i class="fas fa-user-tie"></i>
-                <strong>Style:</strong> Modern executive portraiture
-              </div>
-            </div>
-          </div>
-          
-          <div class="project-outcome">
-            <h3><i class="fas fa-chart-line"></i> Application</h3>
-            <p>Perfect for annual reports, executive profiles, and corporate communications materials.</p>
-          </div>
-        </div>
-      `,
-      tags: ['Business', 'Executive', 'Corporate', 'Professional'],
-      duration: '1.5 hours',
-      client: 'Fortune 500 Company'
-    }
-  ],
-  events: [
-    {
-      id: 'wedding-1',
-      title: 'Wedding Ceremony',
-      mainImage: 'components/profetional portraits/1.png',
-      slideshowImages: [
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <h3>Ceremony Highlights</h3>
-        <p>Captured during a traditional Sri Lankan wedding, focusing on emotional peaks like vow exchanges and family blessings, using candid photography to preserve authenticity.</p>
-        <h3>Coverage Details</h3>
-        <ul>
-          <li><strong>Timeline:</strong> 8-hour event coverage with 500+ shots.</li>
-          <li><strong>Style:</strong> Documentary with selective posed moments.</li>
-          <li><strong>Deliverables:</strong> Edited album and high-res digital files.</li>
-        </ul>
-        <p>This gallery tells the complete story of love and celebration.</p>
-      `
-    },
-    {
-      id: 'corporate-event-1',
-      title: 'Corporate Event',
-      mainImage: 'components/profetional portraits/2.webp',
-      slideshowImages: [
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <h3>Event Overview</h3>
-        <p>Professional coverage of a corporate networking event, capturing keynote speeches, team interactions, and branding moments to highlight company culture.</p>
-        <h3>Technical Details</h3>
-        <ul>
-          <li><strong>Equipment:</strong> Nikon D850 with 24-70mm f/2.8 lens.</li>
-          <li><strong>Lighting:</strong> On-camera flash with diffusers for indoor shots.</li>
-          <li><strong>Output:</strong> Curated gallery for corporate marketing.</li>
-        </ul>
-        <p>Designed for corporate portfolios and promotional materials.</p>
-      `
-    }
-  ],
-  landscape: [
-    {
-      id: 'mountain-1',
-      title: 'Mountain Vista',
-      mainImage: 'components/profetional portraits/3.png',
-      slideshowImages: [
-        'components/profetional portraits/3.png',
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/2.webp'
-      ],
-      extendedDesc: `
-        <h3>Landscape Capture</h3>
-        <p>This mountain vista was photographed during golden hour to maximize natural lighting and color vibrancy, showcasing the rugged beauty of the terrain.</p>
-        <h3>Technical Details</h3>
-        <ul>
-          <li><strong>Equipment:</strong> Sony A7R IV with 16-35mm wide-angle lens.</li>
-          <li><strong>Technique:</strong> Long exposure for smooth cloud movement.</li>
-          <li><strong>Post-Processing:</strong> Lightroom HDR for dynamic range.</li>
-        </ul>
-        <p>Perfect for environmental campaigns or fine art prints.</p>
-      `
-    },
-    {
-      id: 'sunset-1',
-      title: 'Sunset Serenity',
-      mainImage: 'components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp',
-      slideshowImages: [
-        'components/profetional portraits/serious-indian-professional-business-man-office-portrait-serious-young-ambitious-indian-businessman-project-leader-dressed-367980912.webp',
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <h3>Golden Hour Shot</h3>
-        <p>Captured at sunset, this image emphasizes serene colors and soft lighting to evoke tranquility and natural beauty.</p>
-        <h3>Technical Details</h3>
-        <ul>
-          <li><strong>Equipment:</strong> Canon 5D Mark IV with 50mm f/1.4 lens.</li>
-          <li><strong>Technique:</strong> Shallow depth of field for subject focus.</li>
-          <li><strong>Editing:</strong> Color grading for warm tones.</li>
-        </ul>
-        <p>Ideal for wall art or promotional nature content.</p>
-      `
-    }
-  ],
-  commercial: [
-    {
-      id: 'product-1',
-      title: 'Product Showcase',
-      mainImage: 'components/profetional portraits/1.png',
-      slideshowImages: [
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <h3>Commercial Photography</h3>
-        <p>This product showcase was designed to highlight key features with clean, professional lighting and minimalistic backgrounds for maximum impact.</p>
-        <h3>Technical Details</h3>
-        <ul>
-          <li><strong>Equipment:</strong> Nikon Z6 with 105mm macro lens.</li>
-          <li><strong>Lighting:</strong> Three-point studio lighting setup.</li>
-          <li><strong>Output:</strong> High-res images for e-commerce and ads.</li>
-        </ul>
-        <p>Optimized for online retail and marketing campaigns.</p>
-      `
-    },
-    {
-      id: 'brand-1',
-      title: 'Brand Campaign',
-      mainImage: 'components/profetional portraits/2.webp',
-      slideshowImages: [
-        'components/profetional portraits/2.webp',
-        'components/profetional portraits/1.png',
-        'components/profetional portraits/3.png'
-      ],
-      extendedDesc: `
-        <h3>Brand Identity Shoot</h3>
-        <p>Created for a marketing campaign, this shoot focused on aligning visuals with brand values, using dynamic compositions and vibrant colors.</p>
-        <h3>Technical Details</h3>
-        <ul>
-          <li><strong>Equipment:</strong> Sony A7 III with 24-70mm lens.</li>
-          <li><strong>Style:</strong> Lifestyle photography with real-world settings.</li>
-          <li><strong>Editing:</strong> Photoshop for color pop and clarity.</li>
-        </ul>
-        <p>Designed to enhance brand visibility across digital platforms.</p>
-      `
-    }
-  ],
-  all: () => categoryGalleries.portraits.concat(categoryGalleries.events, categoryGalleries.landscape, categoryGalleries.commercial)
-};
 
-// Enhanced getPhotoContent
-function getPhotoContent(photoId, category, startIndex) {
-  const gallery = category === 'all' ? categoryGalleries.all() : categoryGalleries[category] || [];
-  const item = gallery.find(g => g.id === photoId);
-  if (!item) return { content: '<p>Photo not available.</p>', title: 'Photo', description: '', category, startIndex, totalSlides: 0 };
-
-  const slidesHtml = item.slideshowImages.map((imgSrc, idx) => 
-    `<div class="slide">
-      <img data-src="${imgSrc}" src="${imgSrc}" alt="${item.title} - Slide ${idx + 1}" loading="lazy">
-      <div class="slide-counter">${idx + 1} / ${item.slideshowImages.length}</div>
-    </div>`
-  ).join('');
-
-  const tagsHtml = item.tags ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
-
-  const slideshowHtml = `
-    <div class="gallery-slideshow">
-      <div class="slideshow-header">
-        <h4><i class="fas fa-images"></i> Gallery Slideshow</h4>
-        <div class="slideshow-controls">
-          <button class="control-btn" onclick="toggleAutoplay()" aria-label="Toggle autoplay">
-            <i class="fas fa-play" id="autoplay-icon"></i>
-          </button>
-          <button class="control-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
-            <i class="fas fa-expand"></i>
-          </button>
-        </div>
-      </div>
-      <div class="slides-container" id="slides-container">
-        <div class="slides-track" id="slides-track">${item.slideshowImages.map((imgSrc, idx) => `<div class="slide">
-      <img data-src="${imgSrc}" src="${imgSrc}" alt="${item.title} - Slide ${idx + 1}" loading="lazy">
-      <div class="slide-counter">${idx + 1} / ${item.slideshowImages.length}</div>
-    </div>`).join('')}</div>
-      </div>
-      <button class="slideshow-arrow prev-arrow" onclick="navigateSlides(-1)" aria-label="Previous slide">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <button class="slideshow-arrow next-arrow" onclick="navigateSlides(1)" aria-label="Next slide">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-      <div class="dots-container" id="dots-container"></div>
-    </div>
-  `;
-
-  const projectInfoHtml = `
-    <div class="project-info">
-      <div class="info-item">
-        <i class="fas fa-clock"></i>
-        <span>Duration: ${item.duration || 'N/A'}</span>
-      </div>
-      <div class="info-item">
-        <i class="fas fa-user"></i>
-        <span>Client: ${item.client || 'N/A'}</span>
-      </div>
-      <div class="info-item">
-        <i class="fas fa-folder"></i>
-        <span>Category: ${item.category || category}</span>
-      </div>
-    </div>
-  `;
-
-  return {
-    content: `
-      <div class="gallery-modal-hero">
-        <div class="hero-image">
-          <img data-src="${item.mainImage}" src="${item.mainImage}" alt="${item.title}" loading="lazy">
-          <div class="image-overlay">
-            <div class="overlay-content">
-              <h2 class="hero-title">${item.title}</h2>
-              <div class="hero-tags">${tagsHtml}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      ${projectInfoHtml}
-      
-      <div class="gallery-modal-description">
-        ${item.extendedDesc}
-      </div>
-      
-      <div class="slideshow-section">
-        ${slideshowHtml}
-      </div>
-    `,
-    title: item.title,
-    description: item.extendedDesc,
-    category,
-    startIndex,
-    totalSlides: item.slideshowImages.length
-  };
-}
-
-// Updated openPhotoModal
-function openPhotoModal(photoId, category, startIndex) {
-  const galleryManager = window.galleryManager;
-  if (!galleryManager) return;
-
-  const contentData = getPhotoContent(photoId, category, startIndex);
-  galleryManager.openGalleryModal(
-    contentData.content,
-    `${contentData.title} - ${contentData.category.charAt(0).toUpperCase() + contentData.category.slice(1)}`,
-    contentData.description,
-    contentData.category,
-    contentData.startIndex,
-    contentData.totalSlides
-  );
-}
 
 // Global functions
 function navigateSlides(direction) {
@@ -1804,48 +1307,14 @@ class GalleryManager {
   }
 
   init() {
-    this.setupPhotoGallery();
     this.setupVideoGallery();
     this.setupGalleryModals();
-  }
-
-  setupPhotoGallery() {
-    const photoFilterButtons = document.querySelectorAll('.gallery-filter-btn');
-    const photoItems = document.querySelectorAll('.photo-item');
-
-    photoFilterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        photoFilterButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        const filterValue = button.getAttribute('data-filter');
-        this.filterPhotoItems(photoItems, filterValue);
-      });
-    });
   }
 
   setupVideoGallery() {
     // Unchanged from original
   }
 
-  filterPhotoItems(items, filterValue) {
-    items.forEach(item => {
-      const category = item.getAttribute('data-category');
-      if (filterValue === 'all' || category === filterValue) {
-        item.style.display = 'block';
-        setTimeout(() => {
-          item.style.opacity = '1';
-          item.style.transform = 'scale(1)';
-        }, 100);
-      } else {
-        item.style.opacity = '0';
-        item.style.transform = 'scale(0.8)';
-        setTimeout(() => {
-          item.style.display = 'none';
-        }, 300);
-      }
-    });
-  }
 
   setupGalleryModals() {
    
